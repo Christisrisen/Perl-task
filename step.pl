@@ -1,10 +1,11 @@
 #!/usr/bin/perl -X
 require HTTP::Request;
-use Image::OCR::Tesseract 'get_ocr';
+use HTTP::Request 6.07;
 use LWP::UserAgent ();
+use Image::OCR::Tesseract 'get_ocr';
 
 ##########
-$user = 'username'; # Enter your username here
+$user = 'login'; # Enter your username here
 $pass = 'password'; # Enter your password here
 ###########
 
@@ -17,14 +18,19 @@ $ua = LWP::UserAgent->new;
 $html = $ua->get($url);
 
 # Grab img from HTML code
-$html->decoded_content =~ m/<img src="/;
-$after = "$'\n";
-$after =~ m/"/;
-$imgPath = "$'\n";
+$html->decoded_content =~ m/<img/;
+$img = "$'\n";
+$img =~ m/src="/;
+$imgNext  = "$'\n";
+$imgNext =~ m/"/;
+$imgPath = "$`\n";
+
 #########
-$imgUrl = "$home$imgPath";
-$image = $ua->get($imgUrl);
-#$code = convert_8bpp_tif($image);
-$code = get_ocr($image);
+$captcha = "captcha.png";
+$request = HTTP::Request->new(GET => "$home$imgPath");
+$resCaptcha = $ua->simple_request( $request, $captcha );
+$text = get_ocr( $captcha);
+
+$resForm = $ua->put( $url, "u" => $user, "p" => $pass, "text" => $text );
 
 1;
