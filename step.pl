@@ -27,9 +27,9 @@ $imgPath = "$`\n";
 
 #########
 $captcha = "captcha.png";
-$request = HTTP::Request->new(GET => "$home$imgPath");
+$request = HTTP::Request->new( GET => "$home$imgPath" );
 $resCaptcha = $ua->simple_request( $request, $captcha );
-$text = get_ocr( $captcha);
+$text = get_ocr( $captcha );
 
 $resForm = $ua->put( $url, "u" => $user, "p" => $pass, "text" => $text );
 
