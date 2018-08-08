@@ -31,6 +31,8 @@ $request = HTTP::Request->new( GET => "$home$imgPath" );
 $resCaptcha = $ua->simple_request( $request, $captcha );
 $text = get_ocr( $captcha );
 
-$resForm = $ua->put( $url, "u" => $user, "p" => $pass, "text" => $text );
+$resForm = $ua->post( $url, [ "u" => $user, "p" => $pass, "text" => $text ] );
+
+print $resForm->content;
 
 1;
