@@ -1,4 +1,4 @@
-# Perl-task
+# Perl-OvercomeCaptcha
 
 Your goal is to send the username/password using HTTP request to the URL
 
